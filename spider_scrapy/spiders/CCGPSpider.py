@@ -2,6 +2,7 @@ import re
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.http import Request
+from scrapy.utils.response import get_base_url
 from spider_scrapy.items import SpiderScrapyItem
 
 
@@ -26,8 +27,12 @@ class CCGPSpider(scrapy.Spider):
             yield Request(url, callback=self.get_content)
 
     def get_content(self, response):
+        item = SpiderScrapyItem()
         document = BeautifulSoup(response.text, 'lxml')
-
-        document.find('strong', text='项目名称')
-
-        pass
+        item['url'] = get_base_url(response)
+        item['name'] = document.find('strong', text=re.compile('项目名称')).parent.get_text()[5:]
+        title = document.find('div', class_='div_hui').find_next('div').find('span').get_text()
+        item['type'] = title[1:3]
+        item['title'] = title[4:]
+        item['code'] = document.find('strong', text=re.compile('项目编号')).parent.get_text()[5:]
+        return item

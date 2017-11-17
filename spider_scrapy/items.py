@@ -9,12 +9,14 @@ import scrapy
 
 
 class SpiderScrapyItem(scrapy.Item):
-    # 项目标题
-    title = scrapy.Field()
-    # 项目编号
-    code = scrapy.Field()
     # 类型
     type = scrapy.Field()
+    # 项目标题
+    title = scrapy.Field()
+    # 项目名称
+    name = scrapy.Field()
+    # 项目编号
+    code = scrapy.Field()
     # 发布时间
     createTime = scrapy.Field()
     # 内容
