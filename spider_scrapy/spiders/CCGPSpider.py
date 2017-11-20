@@ -10,12 +10,12 @@ class CCGPSpider(scrapy.Spider):
     name = 'CCGP'
     allowed_domain = ['ccgp-beijing.gov.cn']
     base_url = 'http://www.ccgp-beijing.gov.cn/xxgg/sjzfcggg/sjzbgg/'
-    base_url_start = base_url + 'index'
+    base_url_start = base_url + 'index_'
     base_url_end = '.html'
 
     def start_requests(self):
-        yield Request(self.base_url_start + self.base_url_end)
-        for i in range(1, 1):
+        yield Request(self.base_url_start + self.base_url_end,callback=self.parse)
+        for i in range(1, 16):
             url = self.base_url_start + str(i) + self.base_url_end
             yield Request(url, callback=self.parse)
 
